@@ -1,4 +1,4 @@
-import * as reactGA from "react-ga";
+import ReactGA from "react-ga4";
 import { BrowserRouter, Route, Routes } from "react-router";
 import type { MockInstance } from "vitest";
 import { vi } from "vitest";
@@ -17,7 +17,7 @@ describe("CaptureRoutes", () => {
 
   beforeEach(() => {
     vi.stubEnv("PROD", true);
-    pageviewSpy = vi.spyOn(reactGA, "pageview");
+    pageviewSpy = vi.spyOn(ReactGA, "send");
     state = rootStateFactory.build({
       general: generalStateFactory.build({
         config: configFactory.build({
@@ -43,6 +43,9 @@ describe("CaptureRoutes", () => {
         </Routes>
       </BrowserRouter>,
     );
-    expect(pageviewSpy).toHaveBeenCalledWith("/new/path");
+    expect(pageviewSpy).toHaveBeenCalledWith({
+      hitType: "page_view",
+      page: "/new/path",
+    });
   });
 });

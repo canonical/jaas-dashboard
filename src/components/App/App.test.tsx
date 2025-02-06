@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import * as reactGA from "react-ga";
+import ReactGA from "react-ga4";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import { vi } from "vitest";
@@ -14,9 +14,8 @@ vi.mock("components/Routes", () => ({
   default: vi.fn(),
 }));
 
-vi.mock("react-ga", () => ({
-  initialize: vi.fn(),
-  pageview: vi.fn(),
+vi.mock("react-ga4", () => ({
+  default: { initialize: vi.fn(), send: vi.fn() },
 }));
 
 vi.mock("react-router", async () => {
@@ -63,8 +62,8 @@ describe("App", () => {
   it("sends pageview events", () => {
     vi.stubEnv("PROD", true);
     window.happyDOM.setURL("/models");
-    const initializeSpy = vi.spyOn(reactGA, "initialize");
-    const pageviewSpy = vi.spyOn(reactGA, "pageview");
+    const initializeSpy = vi.spyOn(ReactGA, "initialize");
+    const pageviewSpy = vi.spyOn(ReactGA, "send");
     const state = rootStateFactory.withGeneralConfig().build();
     const store = mockStore(state);
     render(
@@ -73,14 +72,17 @@ describe("App", () => {
       </Provider>,
     );
     expect(initializeSpy).toHaveBeenCalled();
-    expect(pageviewSpy).toHaveBeenCalledWith("/models");
+    expect(pageviewSpy).toHaveBeenCalledWith({
+      hitType: "page_view",
+      page: "/models",
+    });
   });
 
   it("does not send pageview events if analytics is disabled", () => {
     vi.stubEnv("PROD", true);
     window.happyDOM.setURL("/models");
-    const initializeSpy = vi.spyOn(reactGA, "initialize");
-    const pageviewSpy = vi.spyOn(reactGA, "pageview");
+    const initializeSpy = vi.spyOn(ReactGA, "initialize");
+    const pageviewSpy = vi.spyOn(ReactGA, "send");
     const state = rootStateFactory.build({
       general: generalStateFactory.build({
         config: configFactory.build({

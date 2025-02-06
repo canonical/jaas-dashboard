@@ -8,6 +8,7 @@ import FadeUpIn from "animations/FadeUpIn";
 import AuthenticationButton from "components/AuthenticationButton";
 import Logo from "components/Logo";
 import ToastCard from "components/ToastCard";
+import useAnalytics from "hooks/useAnalytics";
 import {
   getConfig,
   getLoginError,
@@ -15,6 +16,8 @@ import {
   getWSControllerURL,
   isLoggedIn,
   getIsJuju,
+  getAppVersion,
+  getControllerConnection,
 } from "store/general/selectors";
 import { AuthMethod } from "store/general/types";
 import { useAppSelector } from "store/store";
@@ -27,9 +30,14 @@ import { ErrorResponse, Label, TestId } from "./types";
 
 export default function LogIn() {
   const viewedAuthRequests = useRef<string[]>([]);
+  const sendAnalytics = useAnalytics();
   const config = useSelector(getConfig);
   const isJuju = useSelector(getIsJuju);
+  const appVersion = useSelector(getAppVersion);
   const wsControllerURL = useAppSelector(getWSControllerURL);
+  const controllerVersion = useAppSelector((state) =>
+    getControllerConnection(state, wsControllerURL),
+  )?.serverVersion;
   const userIsLoggedIn = useAppSelector((state) =>
     isLoggedIn(state, wsControllerURL),
   );
@@ -70,6 +78,20 @@ export default function LogIn() {
       }
     });
   }, [visitURLs]);
+
+  useEffect(() => {
+    if (userIsLoggedIn) {
+      sendAnalytics({
+        category: "Authentication",
+        action: "User Login",
+        eventParams: {
+          dashboardVersion: appVersion ?? "",
+          controllerVersion: controllerVersion ?? "",
+          isJuju: (!!isJuju).toString(),
+        },
+      });
+    }
+  }, [userIsLoggedIn, appVersion, controllerVersion, isJuju, sendAnalytics]);
 
   let form: ReactNode = null;
   switch (config?.authMethod) {

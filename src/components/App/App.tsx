@@ -1,4 +1,4 @@
-import { initialize, pageview } from "react-ga";
+import ReactGA from "react-ga4";
 
 import ConnectionError from "components/ConnectionError";
 import ErrorBoundary from "components/ErrorBoundary";
@@ -12,8 +12,11 @@ function App() {
   const isProduction = import.meta.env.PROD;
   const analyticsEnabled = useAppSelector(getAnalyticsEnabled);
   if (isProduction && analyticsEnabled) {
-    initialize("UA-1018242-68");
-    pageview(window.location.href.replace(window.location.origin, ""));
+    ReactGA.initialize("UA-1018242-68"); // TODO: should use the GA4 Measurement ID (which starts with "G-")
+    ReactGA.send({
+      hitType: "page_view",
+      page: window.location.href.replace(window.location.origin, ""),
+    });
   }
 
   return (
