@@ -16,8 +16,6 @@ import {
   getWSControllerURL,
   isLoggedIn,
   getIsJuju,
-  getAppVersion,
-  getControllerConnection,
 } from "store/general/selectors";
 import { AuthMethod } from "store/general/types";
 import { useAppSelector } from "store/store";
@@ -33,11 +31,7 @@ export default function LogIn() {
   const sendAnalytics = useAnalytics();
   const config = useSelector(getConfig);
   const isJuju = useSelector(getIsJuju);
-  const appVersion = useSelector(getAppVersion);
   const wsControllerURL = useAppSelector(getWSControllerURL);
-  const controllerVersion = useAppSelector((state) =>
-    getControllerConnection(state, wsControllerURL),
-  )?.serverVersion;
   const userIsLoggedIn = useAppSelector((state) =>
     isLoggedIn(state, wsControllerURL),
   );
@@ -84,14 +78,9 @@ export default function LogIn() {
       sendAnalytics({
         category: "Authentication",
         action: "User Login",
-        eventParams: {
-          dashboardVersion: appVersion ?? "",
-          controllerVersion: controllerVersion ?? "",
-          isJuju: (!!isJuju).toString(),
-        },
       });
     }
-  }, [userIsLoggedIn, appVersion, controllerVersion, isJuju, sendAnalytics]);
+  }, [userIsLoggedIn, sendAnalytics]);
 
   let form: ReactNode = null;
   switch (config?.authMethod) {

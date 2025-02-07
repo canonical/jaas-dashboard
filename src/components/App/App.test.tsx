@@ -73,7 +73,7 @@ describe("App", () => {
     );
     expect(initializeSpy).toHaveBeenCalled();
     expect(pageviewSpy).toHaveBeenCalledWith({
-      hitType: "page_view",
+      hitType: "pageview",
       page: "/models",
     });
   });

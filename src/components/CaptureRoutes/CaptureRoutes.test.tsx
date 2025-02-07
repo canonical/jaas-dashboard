@@ -44,7 +44,7 @@ describe("CaptureRoutes", () => {
       </BrowserRouter>,
     );
     expect(pageviewSpy).toHaveBeenCalledWith({
-      hitType: "page_view",
+      hitType: "pageview",
       page: "/new/path",
     });
   });
