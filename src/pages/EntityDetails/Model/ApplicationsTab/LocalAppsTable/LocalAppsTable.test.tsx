@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { actions as jujuActions } from "store/juju";
 import type { RootState } from "store/store";
 import { jujuStateFactory, rootStateFactory } from "testing/factories";
-import { generalStateFactory } from "testing/factories/general";
+import { generalStateFactory, configFactory } from "testing/factories/general";
 import { charmApplicationFactory } from "testing/factories/juju/Charms";
 import { modelUserInfoFactory } from "testing/factories/juju/ModelManagerV9";
 import {
@@ -26,6 +26,9 @@ describe("LocalAppsTable", () => {
   beforeEach(() => {
     state = rootStateFactory.build({
       general: generalStateFactory.build({
+        config: configFactory.build({
+          isJuju: true,
+        }),
         controllerConnections: {
           "wss://jimm.jujucharms.com/api": {
             user: {
