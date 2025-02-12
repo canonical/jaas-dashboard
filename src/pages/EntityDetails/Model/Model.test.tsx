@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { vi } from "vitest";
 
 import { TestId as InfoPanelTestId } from "components/InfoPanel/types";
+import { JIMMRelation, JIMMTarget } from "juju/jimm/JIMMV4";
 import { TestId as SecretsTestId } from "pages/EntityDetails/Model/Secrets/types";
 import type { RootState } from "store/store";
 import { jujuStateFactory, rootStateFactory } from "testing/factories";
@@ -10,6 +11,9 @@ import {
   configFactory,
   credentialFactory,
   generalStateFactory,
+  controllerFeaturesFactory,
+  controllerFeaturesStateFactory,
+  authUserInfoFactory,
 } from "testing/factories/general";
 import {
   actionResultsFactory,
@@ -28,6 +32,7 @@ import {
   modelListInfoFactory,
   modelFeaturesStateFactory,
   modelFeaturesFactory,
+  rebacRelationFactory,
 } from "testing/factories/juju/juju";
 import {
   applicationInfoFactory,
@@ -354,6 +359,34 @@ describe("Model", () => {
         },
       }),
     };
+    state.general.controllerFeatures = controllerFeaturesStateFactory.build({
+      "wss://jimm.jujucharms.com/api": controllerFeaturesFactory.build({
+        auditLogs: true,
+      }),
+    });
+    state.general.controllerConnections = {
+      "wss://jimm.jujucharms.com/api": {
+        user: authUserInfoFactory.build(),
+      },
+    };
+    state.juju.rebacRelations = [
+      rebacRelationFactory.build({
+        tuple: {
+          object: "user-eggman@external",
+          relation: JIMMRelation.AUDIT_LOG_VIEWER,
+          target_object: JIMMTarget.JIMM_CONTROLLER,
+        },
+        allowed: true,
+      }),
+      rebacRelationFactory.build({
+        tuple: {
+          object: "user-eggman@external",
+          relation: JIMMRelation.ADMINISTRATOR,
+          target_object: JIMMTarget.JIMM_CONTROLLER,
+        },
+        allowed: true,
+      }),
+    ];
     renderComponent(<Model />, {
       state,
       url: "/models/eggman@external/test1?activeView=logs&tableView=audit-logs",

@@ -2,8 +2,16 @@ import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import { AuditLogsTableActionsLabel } from "components/AuditLogsTable/AuditLogsTableActions";
-import { rootStateFactory } from "testing/factories";
-import { configFactory, generalStateFactory } from "testing/factories/general";
+import { JIMMRelation, JIMMTarget } from "juju/jimm/JIMMV4";
+import { rootStateFactory, jujuStateFactory } from "testing/factories";
+import {
+  configFactory,
+  generalStateFactory,
+  controllerFeaturesFactory,
+  controllerFeaturesStateFactory,
+  authUserInfoFactory,
+} from "testing/factories/general";
+import { rebacRelationFactory } from "testing/factories/juju/juju";
 import { renderComponent } from "testing/utils";
 
 import Logs from "./Logs";
@@ -28,9 +36,47 @@ describe("Logs", () => {
   });
 
   it("can display the audit logs tab", async () => {
+    const state = rootStateFactory.withGeneralConfig().build({
+      general: generalStateFactory.build({
+        config: configFactory.build({
+          controllerAPIEndpoint: "wss://jimm.jujucharms.com/api",
+        }),
+        controllerFeatures: controllerFeaturesStateFactory.build({
+          "wss://jimm.jujucharms.com/api": controllerFeaturesFactory.build({
+            auditLogs: true,
+          }),
+        }),
+        controllerConnections: {
+          "wss://jimm.jujucharms.com/api": {
+            user: authUserInfoFactory.build(),
+          },
+        },
+      }),
+      juju: jujuStateFactory.build({
+        rebacRelations: [
+          rebacRelationFactory.build({
+            tuple: {
+              object: "user-eggman@external",
+              relation: JIMMRelation.AUDIT_LOG_VIEWER,
+              target_object: JIMMTarget.JIMM_CONTROLLER,
+            },
+            allowed: true,
+          }),
+          rebacRelationFactory.build({
+            tuple: {
+              object: "user-eggman@external",
+              relation: JIMMRelation.ADMINISTRATOR,
+              target_object: JIMMTarget.JIMM_CONTROLLER,
+            },
+            allowed: true,
+          }),
+        ],
+      }),
+    });
     renderComponent(<Logs />, {
       url: `${url}?activeView=logs&tableView=audit-logs`,
       path,
+      state,
     });
 
     expect(screen.getByRole("tab", { name: "Audit logs" })).toHaveAttribute(

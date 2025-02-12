@@ -1,4 +1,4 @@
-import { fireEvent, screen, waitFor, within } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { vi } from "vitest";
 
@@ -11,11 +11,7 @@ import {
   configFactory,
 } from "testing/factories/general";
 import { modelListInfoFactory } from "testing/factories/juju/juju";
-import {
-  controllerFactory,
-  modelFeaturesStateFactory,
-  modelFeaturesFactory,
-} from "testing/factories/juju/juju";
+import { controllerFactory } from "testing/factories/juju/juju";
 import {
   applicationInfoFactory,
   modelWatcherModelDataFactory,
@@ -23,7 +19,6 @@ import {
 } from "testing/factories/juju/model-watcher";
 import { renderComponent } from "testing/utils";
 import urls from "urls";
-import { ModelTab } from "urls";
 
 import EntityDetails from "./EntityDetails";
 import { Label } from "./types";
@@ -116,94 +111,6 @@ describe("Entity Details Container", () => {
     expect(
       screen.getByRole("heading", { name: Label.NOT_FOUND }),
     ).toBeInTheDocument();
-  });
-
-  it("lists the correct tabs", () => {
-    renderComponent(<EntityDetails />, { path, url, state });
-    expect(screen.getByTestId("view-selector")).toHaveTextContent(
-      /^ApplicationsIntegrationsLogsMachines$/,
-    );
-  });
-
-  it("lists the correct tabs for kubernetes", () => {
-    state.juju.modelWatcherData = {
-      abc123: modelWatcherModelDataFactory.build({
-        applications: {
-          "ceph-mon": applicationInfoFactory.build(),
-        },
-        model: modelWatcherModelInfoFactory.build({
-          name: "enterprise",
-          owner: "kirk@external",
-          type: "kubernetes",
-        }),
-      }),
-    };
-    renderComponent(<EntityDetails />, { path, url, state });
-    expect(screen.getByTestId("view-selector")).toHaveTextContent(
-      /^ApplicationsIntegrationsLogs$/,
-    );
-  });
-
-  it("lists the secrets tab", () => {
-    state.juju.modelFeatures = modelFeaturesStateFactory.build({
-      abc123: modelFeaturesFactory.build({
-        listSecrets: true,
-      }),
-    });
-    renderComponent(<EntityDetails />, { path, url, state });
-    expect(screen.getByTestId("view-selector")).toHaveTextContent(
-      /^ApplicationsIntegrationsLogsSecretsMachines$/,
-    );
-  });
-
-  it("clicking the tabs changes the visible section", async () => {
-    state.juju.modelFeatures = modelFeaturesStateFactory.build({
-      abc123: modelFeaturesFactory.build({
-        listSecrets: true,
-      }),
-    });
-    const { router } = renderComponent(<EntityDetails />, { path, url, state });
-    const viewSelector = screen.getByTestId("view-selector");
-    const sections = [
-      {
-        text: "Applications",
-        query: ModelTab.APPS,
-      },
-      {
-        text: "Integrations",
-        query: ModelTab.INTEGRATIONS,
-      },
-      {
-        text: "Logs",
-        query: ModelTab.LOGS,
-      },
-      {
-        text: "Machines",
-        query: ModelTab.MACHINES,
-      },
-      {
-        text: "Secrets",
-        query: ModelTab.SECRETS,
-      },
-    ];
-    sections.forEach((section) => {
-      const scrollIntoView = vi.fn();
-      fireEvent.click(within(viewSelector).getByText(section.text), {
-        target: {
-          scrollIntoView,
-        },
-      });
-      expect(scrollIntoView.mock.calls[0]).toEqual([
-        {
-          behavior: "smooth",
-          block: "end",
-          inline: "nearest",
-        },
-      ]);
-      expect(router.state.location.search).toEqual(
-        `?activeView=${section.query}`,
-      );
-    });
   });
 
   it("shows the supplied child", async () => {
@@ -419,27 +326,5 @@ describe("Entity Details Container", () => {
     expect(window.location.reload).toHaveBeenCalledTimes(1);
 
     window.location = location;
-  });
-
-  it("should navigate correctly when pressing Action Logs tab under Juju", () => {
-    state.general.config = configFactory.build({
-      isJuju: true,
-    });
-    const { router } = renderComponent(<EntityDetails />, { path, url, state });
-    const viewSelector = screen.getByTestId("view-selector");
-    const scrollIntoView = vi.fn();
-    fireEvent.click(within(viewSelector).getByText("Action Logs"), {
-      target: {
-        scrollIntoView,
-      },
-    });
-    expect(scrollIntoView.mock.calls[0]).toEqual([
-      {
-        behavior: "smooth",
-        block: "end",
-        inline: "nearest",
-      },
-    ]);
-    expect(router.state.location.search).toEqual("?activeView=logs");
   });
 });
