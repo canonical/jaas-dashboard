@@ -1,3 +1,5 @@
+import { urls as generateReBACURLS } from "@canonical/rebac-admin";
+
 import { argPath } from "utils";
 
 export enum ModelTab {
@@ -61,5 +63,7 @@ export const externalURLs = {
   newIssue: "https://github.com/canonical/juju-dashboard/issues/new",
   cliHelp: "https://juju.is/docs/olm/the-juju-web-cli",
 };
+
+export const rebacURLS = generateReBACURLS(urls.permissions);
 
 export default urls;

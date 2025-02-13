@@ -4,8 +4,6 @@ import { useSelector } from "react-redux";
 
 import ModelDetailsLink from "components/ModelDetailsLink";
 import TruncatedTooltip from "components/TruncatedTooltip";
-import type { SetParams } from "hooks/useQueryParams";
-import { useQueryParams } from "hooks/useQueryParams";
 import {
   getActiveUsers,
   getControllerData,
@@ -59,7 +57,6 @@ const generateModelNameCell = (model: ModelData, groupLabel: string) => {
 */
 function generateModelTableDataByStatus(
   groupedModels: Record<Status, ModelData[]>,
-  setPanelQs: SetParams<Record<string, unknown>>,
   activeUsers: Record<string, string>,
   controllers: Controllers | null,
 ) {
@@ -135,10 +132,7 @@ function generateModelTableDataByStatus(
             content: (
               <>
                 {canAdministerModel(activeUser, model?.info?.users) && (
-                  <AccessButton
-                    setPanelQs={setPanelQs}
-                    modelName={model.model.name}
-                  />
+                  <AccessButton modelName={model.model.name} />
                 )}
                 <span className="model-access-alt">{lastUpdated}</span>
               </>
@@ -171,16 +165,11 @@ export default function StatusGroup({ filters }: { filters: Filters }) {
     getGroupedByStatusAndFilteredModelData(filters),
   );
   const controllers = useSelector(getControllerData);
-  const [, setPanelQs] = useQueryParams({
-    model: null,
-    panel: null,
-  });
   const activeUsers = useSelector(getActiveUsers);
 
   const { blockedRows, alertRows, runningRows } =
     generateModelTableDataByStatus(
       groupedAndFilteredData,
-      setPanelQs,
       activeUsers,
       controllers,
     );

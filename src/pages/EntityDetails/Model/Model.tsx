@@ -1,8 +1,9 @@
-import { Button, Icon, MainTable } from "@canonical/react-components";
+import { MainTable } from "@canonical/react-components";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 
+import AccessButton from "components/AccessButton";
 import EntityInfo from "components/EntityInfo";
 import InfoPanel from "components/InfoPanel";
 import type { EntityDetailsRoute } from "components/Routes";
@@ -69,7 +70,7 @@ const Model = () => {
 
   const { userName, modelName } = useParams<EntityDetailsRoute>();
 
-  const [query, setQuery] = useQueryParams<{
+  const [query] = useQueryParams<{
     entity: string | null;
     panel: string | null;
     activeView: string;
@@ -128,16 +129,13 @@ const Model = () => {
         <InfoPanel />
         {canConfigureModel && (
           <div className="entity-details__actions">
-            <Button
-              className="entity-details__action-button"
-              onClick={(event) => {
-                event.stopPropagation();
-                setQuery({ panel: "share-model" }, { replace: true });
-              }}
+            <AccessButton
+              appearance="base"
+              className="u-no-margin--bottom"
+              displayIcon
             >
-              <Icon name="share" />
               {Label.ACCESS_BUTTON}
-            </Button>
+            </AccessButton>
           </div>
         )}
         {modelInfoData && (

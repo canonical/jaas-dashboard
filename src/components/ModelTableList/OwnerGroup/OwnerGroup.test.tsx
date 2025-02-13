@@ -88,6 +88,7 @@ describe("OwnerGroup", () => {
   it("model access button is present in owners group", () => {
     state.general = generalStateFactory.build({
       config: configFactory.build({
+        isJuju: true,
         controllerAPIEndpoint: "wss://jimm.jujucharms.com/api",
       }),
       controllerConnections: {

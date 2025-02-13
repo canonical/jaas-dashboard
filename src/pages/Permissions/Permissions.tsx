@@ -1,4 +1,4 @@
-import { ReBACAdmin, urls as generateReBACURLS } from "@canonical/rebac-admin";
+import { ReBACAdmin } from "@canonical/rebac-admin";
 import type { AxiosError } from "axios";
 import { useRef } from "react";
 import { NavLink } from "react-router";
@@ -7,11 +7,9 @@ import { axiosInstance } from "axios-instance";
 import useLogout from "hooks/useLogout";
 import { endpoints } from "juju/jimm/api";
 import BaseLayout from "layout/BaseLayout/BaseLayout";
-import urls from "urls";
+import { rebacURLS } from "urls";
 
 import { Label, TestId } from "./types";
-
-const rebacURLS = generateReBACURLS(urls.permissions);
 
 const navItems = [
   {
