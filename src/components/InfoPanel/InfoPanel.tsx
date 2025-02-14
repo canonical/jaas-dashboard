@@ -1,7 +1,6 @@
-import { Modal } from "@canonical/react-components";
+import { usePortal, Modal } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
-import usePortal from "react-useportal";
 
 import type { EntityDetailsRoute } from "components/Routes";
 import Topology from "components/Topology";

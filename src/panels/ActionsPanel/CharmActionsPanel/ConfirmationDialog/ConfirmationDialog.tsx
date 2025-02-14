@@ -1,7 +1,6 @@
-import { ConfirmationModal } from "@canonical/react-components";
+import { ConfirmationModal, usePortal } from "@canonical/react-components";
 import reactHotToast from "react-hot-toast";
 import { useParams } from "react-router";
-import usePortal from "react-useportal";
 
 import ToastCard from "components/ToastCard";
 import useAnalytics from "hooks/useAnalytics";

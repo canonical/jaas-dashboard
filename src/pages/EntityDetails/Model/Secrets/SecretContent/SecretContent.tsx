@@ -6,10 +6,10 @@ import {
   Tooltip,
   ActionButton,
   Notification,
+  usePortal,
 } from "@canonical/react-components";
 import { Form, Formik } from "formik";
 import { useParams } from "react-router";
-import usePortal from "react-useportal";
 
 import type { EntityDetailsRoute } from "components/Routes";
 import RevisionField from "components/secrets/RevisionField";
