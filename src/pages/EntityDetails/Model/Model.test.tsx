@@ -84,6 +84,7 @@ describe("Model", () => {
     state = rootStateFactory.build({
       general: generalStateFactory.build({
         config: configFactory.build({
+          isJuju: true,
           controllerAPIEndpoint: "wss://jimm.jujucharms.com/api",
         }),
         controllerConnections: {
@@ -341,6 +342,9 @@ describe("Model", () => {
   });
 
   it("can display the audit logs table", async () => {
+    if (state.general.config) {
+      state.general.config.isJuju = false;
+    }
     state.juju.modelWatcherData = {
       abc123: modelWatcherModelDataFactory.build({
         applications: {

@@ -43,6 +43,7 @@ describe("SecretsPicker", () => {
           "wss://example.com/api": credentialFactory.build(),
         },
         config: configFactory.build({
+          isJuju: true,
           controllerAPIEndpoint: "wss://example.com/api",
         }),
         controllerConnections: {
