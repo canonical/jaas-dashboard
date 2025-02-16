@@ -4,6 +4,7 @@ import {
 } from "@canonical/react-components";
 import { Highlight } from "prism-react-renderer";
 import Prism from "prismjs/components/prism-core";
+import type { JSX } from "react";
 import { useState } from "react";
 import { JSONTree } from "react-json-tree";
 import "prismjs/components/prism-json";

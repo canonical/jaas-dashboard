@@ -5,6 +5,7 @@ import {
   Textarea,
 } from "@canonical/react-components";
 import { FieldArray, useFormikContext } from "formik";
+import type { JSX } from "react";
 
 import type { FormFields } from "../types";
 

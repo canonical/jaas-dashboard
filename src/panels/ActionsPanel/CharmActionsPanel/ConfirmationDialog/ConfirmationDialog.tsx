@@ -1,8 +1,10 @@
 import { ConfirmationModal, usePortal } from "@canonical/react-components";
+import type { JSX } from "react";
 import reactHotToast from "react-hot-toast";
 import { useParams } from "react-router";
 
 import ToastCard from "components/ToastCard";
+import type { ToastInstance } from "components/ToastCard";
 import useAnalytics from "hooks/useAnalytics";
 import { useExecuteActionOnUnits } from "juju/api-hooks";
 import type { ApplicationInfo } from "juju/types";
@@ -50,7 +52,7 @@ const executeAction = (
       if (error) {
         throw error;
       }
-      reactHotToast.custom((t) => (
+      reactHotToast.custom((t: ToastInstance) => (
         <ToastCard toastInstance={t} type="positive">
           {Label.ACTION_SUCCESS}
         </ToastCard>
@@ -58,7 +60,7 @@ const executeAction = (
       return;
     })
     .catch(() => {
-      reactHotToast.custom((t) => (
+      reactHotToast.custom((t: ToastInstance) => (
         <ToastCard toastInstance={t} type="negative">
           {Label.ACTION_ERROR}
         </ToastCard>

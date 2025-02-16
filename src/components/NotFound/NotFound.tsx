@@ -1,3 +1,5 @@
+import type { JSX } from "react";
+
 type Props = {
   message: string;
   children: JSX.Element;

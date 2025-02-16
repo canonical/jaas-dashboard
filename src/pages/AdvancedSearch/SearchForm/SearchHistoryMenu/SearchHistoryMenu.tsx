@@ -1,5 +1,6 @@
 import { ContextualMenu, Icon } from "@canonical/react-components";
 import { useFormikContext } from "formik";
+import type { JSX } from "react";
 
 import { getCrossModelQueryLoading } from "store/juju/selectors";
 import { useAppSelector } from "store/store";

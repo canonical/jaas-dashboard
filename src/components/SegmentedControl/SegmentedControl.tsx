@@ -1,7 +1,7 @@
 import type { ButtonProps } from "@canonical/react-components";
 import { Button, type PropsWithSpread } from "@canonical/react-components";
 import classNames from "classnames";
-import type { ComponentType, ElementType, HTMLProps } from "react";
+import type { ComponentType, ElementType, HTMLProps, JSX } from "react";
 
 type Props<P = ButtonProps> = PropsWithSpread<
   {

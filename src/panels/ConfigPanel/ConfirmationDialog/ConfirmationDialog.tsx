@@ -1,4 +1,5 @@
 import { ConfirmationModal, usePortal } from "@canonical/react-components";
+import type { JSX } from "react";
 import { useParams } from "react-router";
 
 import type { EntityDetailsRoute } from "components/Routes";

@@ -1,4 +1,5 @@
 import { useFormikContext } from "formik";
+import type { JSX } from "react";
 
 import QueryLink from "../QueryLink";
 import type { FormFields } from "../types";

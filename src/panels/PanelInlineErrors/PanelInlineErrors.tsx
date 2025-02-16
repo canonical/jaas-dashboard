@@ -1,6 +1,5 @@
 import { Notification } from "@canonical/react-components";
-import type { ReactNode } from "react";
-import type React from "react";
+import type { JSX, ReactNode } from "react";
 
 import ScrollOnRender from "components/ScrollOnRender";
 
@@ -12,7 +11,7 @@ type Props = {
 const PanelInlineErrors = ({
   inlineErrors,
   scrollArea,
-}: Props): React.JSX.Element | null =>
+}: Props): JSX.Element | null =>
   inlineErrors && inlineErrors.some((error) => !!error) ? (
     <ScrollOnRender scrollArea={scrollArea}>
       {inlineErrors.map((error, index) =>

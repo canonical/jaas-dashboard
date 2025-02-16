@@ -5,6 +5,7 @@ import {
   CodeSnippetBlockAppearance,
   Modal,
 } from "@canonical/react-components";
+import type { JSX } from "react";
 
 import { copyToClipboard } from "components/utils";
 

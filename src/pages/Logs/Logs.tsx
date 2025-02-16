@@ -1,3 +1,5 @@
+import type { JSX } from "react";
+
 import ActionBar from "components/ActionBar";
 import AuditLogsTable from "components/AuditLogsTable/AuditLogsTable";
 import AuditLogsTableActions from "components/AuditLogsTable/AuditLogsTableActions";

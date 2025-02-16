@@ -1,3 +1,4 @@
+import type { JSX } from "react";
 import { type PropsWithChildren } from "react";
 import { Link } from "react-router";
 

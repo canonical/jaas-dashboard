@@ -5,6 +5,8 @@ import { Toaster } from "react-hot-toast";
 import reactHotToast from "react-hot-toast";
 import { vi } from "vitest";
 
+import type { ToastInstance } from "components/ToastCard";
+
 import ToastCard from "./ToastCard";
 
 describe("Toast Card", () => {
@@ -112,7 +114,7 @@ describe("Toast Card", () => {
   it("should remove the card when close is clicked", async () => {
     render(<Toaster />);
     await act(async () => {
-      reactHotToast.custom((t) => (
+      reactHotToast.custom((t: ToastInstance) => (
         <ToastCard type="negative" toastInstance={t}>
           I am a toast message
         </ToastCard>
@@ -128,7 +130,7 @@ describe("Toast Card", () => {
   it("should close the card using the keyboard", async () => {
     render(<Toaster />);
     await act(async () => {
-      reactHotToast.custom((t) => (
+      reactHotToast.custom((t: ToastInstance) => (
         <ToastCard type="negative" toastInstance={t}>
           I am a toast message
         </ToastCard>

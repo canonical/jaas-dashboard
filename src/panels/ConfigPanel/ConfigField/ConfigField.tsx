@@ -1,7 +1,7 @@
 import { Button, Icon } from "@canonical/react-components";
 import classnames from "classnames";
 import classNames from "classnames";
-import type { ReactNode } from "react";
+import type { JSX, ReactNode } from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import DivButton from "components/DivButton";
@@ -44,7 +44,7 @@ const ConfigField = <V extends ConfigValue>({
   const [showDescription, setShowDescription] = useState(false);
   const descriptionRef = useRef<HTMLDivElement>(null);
   const [maxDescriptionHeight, setMaxDescriptionHeight] = useState<string>();
-  const previousValue = useRef<Props<V>["config"]["newValue"]>();
+  const previousValue = useRef<Props<V>["config"]["newValue"]>(null);
   const valueChanged = config.newValue !== previousValue.current;
 
   let inputValue = config.default;

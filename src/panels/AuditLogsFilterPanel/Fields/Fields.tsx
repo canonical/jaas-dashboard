@@ -1,6 +1,7 @@
 import { Input } from "@canonical/react-components";
 import { format } from "date-fns";
 import { Field, useFormikContext } from "formik";
+import type { JSX } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 

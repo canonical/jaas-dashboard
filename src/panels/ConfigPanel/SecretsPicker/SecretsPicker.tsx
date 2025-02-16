@@ -13,7 +13,7 @@ import {
   Button,
   usePortal,
 } from "@canonical/react-components";
-import type { ReactNode } from "react";
+import type { JSX, ReactNode } from "react";
 import { useId, useState } from "react";
 import { useParams } from "react-router";
 

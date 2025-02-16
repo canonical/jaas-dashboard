@@ -1,3 +1,5 @@
+import type { JSX } from "react";
+
 import type { ConfigProps } from "../ConfigField";
 import ConfigField from "../ConfigField";
 

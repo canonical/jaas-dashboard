@@ -1,7 +1,7 @@
 import { Button, MainTable, Icon } from "@canonical/react-components";
 import classNames from "classnames";
 import { Field, Formik } from "formik";
-import type { MouseEvent } from "react";
+import type { JSX, MouseEvent } from "react";
 import { useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router";
@@ -56,7 +56,7 @@ export default function App(): JSX.Element {
     useState<boolean>(false);
 
   const tablesRef = useRef<HTMLDivElement>(null);
-  const setFieldsValues = useRef<SetFieldValue<FormData>>();
+  const setFieldsValues = useRef<SetFieldValue<FormData>>(null);
   const selectedUnits = useRef<string[]>([]);
   const selectAll = useRef<boolean>(false);
 
