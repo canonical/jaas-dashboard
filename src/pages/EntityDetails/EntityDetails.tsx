@@ -1,6 +1,6 @@
-import { Button, Notification, Strip, Tabs } from "@canonical/react-components";
+import { Button, Notification, Strip } from "@canonical/react-components";
 import classNames from "classnames";
-import type { ReactNode, MouseEvent } from "react";
+import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams, Link, Outlet } from "react-router";
@@ -11,24 +11,21 @@ import NotFound from "components/NotFound";
 import type { EntityDetailsRoute } from "components/Routes";
 import WebCLI from "components/WebCLI";
 import { useEntityDetailsParams } from "components/hooks";
-import { useQueryParams } from "hooks/useQueryParams";
 import useWindowTitle from "hooks/useWindowTitle";
 import BaseLayout from "layout/BaseLayout/BaseLayout";
 import { getIsJuju, getUserPass } from "store/general/selectors";
 import {
-  getCanListSecrets,
   getControllerDataByUUID,
   getModelInfo,
   getModelListLoaded,
   getModelUUIDFromList,
-  isKubernetesModel,
 } from "store/juju/selectors";
 import { useAppSelector } from "store/store";
 import urls from "urls";
-import { ModelTab } from "urls";
 import { getMajorMinorVersion } from "utils";
 
 import "./_entity-details.scss";
+import ModelTabs from "./Model/ModelTabs";
 import { Label, TestId } from "./types";
 
 type Props = {
@@ -52,19 +49,9 @@ const EntityDetails = ({ modelWatcherError }: Props) => {
   const modelsLoaded = useAppSelector(getModelListLoaded);
   const modelUUID = useSelector(getModelUUIDFromList(modelName, userName));
   const modelInfo = useSelector(getModelInfo(modelUUID));
-  const isK8s = useAppSelector((state) => isKubernetesModel(state, modelUUID));
   const { isNestedEntityPage } = useEntityDetailsParams();
 
   const isJuju = useSelector(getIsJuju);
-
-  const [query] = useQueryParams({
-    panel: null,
-    entity: null,
-    activeView: "apps",
-    filterQuery: "",
-  });
-
-  const { activeView } = query;
 
   const [showWebCLI, setShowWebCLI] = useState(false);
 
@@ -79,9 +66,6 @@ const EntityDetails = ({ modelWatcherError }: Props) => {
     getControllerDataByUUID(controllerUUID),
   );
   const entityType = getEntityType(routeParams);
-  const canListSecrets = useAppSelector((state) =>
-    getCanListSecrets(state, modelUUID),
-  );
   const credentials = useAppSelector((state) =>
     getUserPass(state, primaryControllerData?.[0]),
   );
@@ -91,14 +75,6 @@ const EntityDetails = ({ modelWatcherError }: Props) => {
       .replace("wss://", "")
       .replace("/api", "") || null;
   const wsProtocol = primaryControllerData?.[0].split("://")[0];
-
-  const handleNavClick = (e: MouseEvent) => {
-    (e.target as HTMLAnchorElement)?.scrollIntoView({
-      behavior: "smooth",
-      block: "end",
-      inline: "nearest",
-    });
-  };
 
   useEffect(() => {
     if (isJuju && getMajorMinorVersion(modelInfo?.version) >= 2.9) {
@@ -111,57 +87,6 @@ const EntityDetails = ({ modelWatcherError }: Props) => {
   }, [modelInfo, isJuju]);
 
   useWindowTitle(modelInfo?.name ? `Model: ${modelInfo?.name}` : "...");
-
-  const generateTabItems = () => {
-    if (!userName || !modelName) {
-      return [];
-    }
-    const items = [
-      {
-        active: activeView === ModelTab.APPS,
-        label: "Applications",
-        onClick: (e: MouseEvent) => handleNavClick(e),
-        to: urls.model.tab({ userName, modelName, tab: ModelTab.APPS }),
-        component: Link,
-      },
-      {
-        active: activeView === ModelTab.INTEGRATIONS,
-        label: "Integrations",
-        onClick: (e: MouseEvent) => handleNavClick(e),
-        to: urls.model.tab({ userName, modelName, tab: ModelTab.INTEGRATIONS }),
-        component: Link,
-      },
-      {
-        active: activeView === "logs",
-        label: isJuju ? "Action Logs" : "Logs",
-        onClick: (e: MouseEvent) => handleNavClick(e),
-        to: urls.model.tab({ userName, modelName, tab: ModelTab.LOGS }),
-        component: Link,
-      },
-    ];
-
-    if (canListSecrets) {
-      items.push({
-        active: activeView === "secrets",
-        label: "Secrets",
-        onClick: (e: MouseEvent) => handleNavClick(e),
-        to: urls.model.tab({ userName, modelName, tab: ModelTab.SECRETS }),
-        component: Link,
-      });
-    }
-
-    if (!isK8s) {
-      items.push({
-        active: activeView === ModelTab.MACHINES,
-        label: "Machines",
-        onClick: (e: MouseEvent) => handleNavClick(e),
-        to: urls.model.tab({ userName, modelName, tab: ModelTab.MACHINES }),
-        component: Link,
-      });
-    }
-
-    return items;
-  };
 
   let content: ReactNode;
   if (modelInfo) {
@@ -215,13 +140,8 @@ const EntityDetails = ({ modelWatcherError }: Props) => {
       title={
         <>
           <Breadcrumb />
-          <div
-            className="entity-details__view-selector"
-            data-testid="view-selector"
-          >
-            {modelInfo && entityType === "model" && (
-              <Tabs links={generateTabItems()} />
-            )}
+          <div className="entity-details__view-selector">
+            {modelInfo && entityType === "model" ? <ModelTabs /> : null}
           </div>
         </>
       }

@@ -4,6 +4,7 @@ import ActionBar from "components/ActionBar";
 import AuditLogsTableActions from "components/AuditLogsTable/AuditLogsTableActions";
 import SegmentedControl from "components/SegmentedControl";
 import { useQueryParams } from "hooks/useQueryParams";
+import { useAuditLogsPermitted } from "juju/api-hooks/permissions";
 import { getIsJuju } from "store/general/selectors";
 
 import "./_logs.scss";
@@ -18,6 +19,7 @@ const BUTTON_DETAILS = [
 
 const Logs = () => {
   const isJuju = useSelector(getIsJuju);
+  const { permitted: auditLogsAllowed } = useAuditLogsPermitted();
   const [{ tableView }, setQueryParams] = useQueryParams<{
     activeView: string | null;
     panel: string | null;
@@ -45,7 +47,7 @@ const Logs = () => {
         </ActionBar>
       )}
       {tableView === "action-logs" && <ActionLogs />}
-      {!isJuju && tableView === "audit-logs" && <AuditLogs />}
+      {auditLogsAllowed && tableView === "audit-logs" && <AuditLogs />}
     </div>
   );
 };
