@@ -1,5 +1,5 @@
 export enum Label {
-  ACCESS_BUTTON = "Model access",
+  ACCESS_BUTTON = "Manage access",
 }
 
 export enum TestId {

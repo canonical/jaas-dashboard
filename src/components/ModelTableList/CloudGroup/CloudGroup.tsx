@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 import ModelDetailsLink from "components/ModelDetailsLink";
 import Status from "components/Status";
 import TruncatedTooltip from "components/TruncatedTooltip";
-import { useQueryParams } from "hooks/useQueryParams";
 import {
   getActiveUsers,
   getControllerData,
@@ -42,11 +41,6 @@ export default function CloudGroup({ filters }: Props) {
   const groupedAndFilteredData = useSelector(
     getGroupedByCloudAndFilteredModelData(filters),
   );
-
-  const [, setPanelQs] = useQueryParams({
-    model: null,
-    panel: null,
-  });
 
   const cloudTables: ReactNode[] = [];
   for (const cloud in groupedAndFilteredData) {
@@ -127,10 +121,7 @@ export default function CloudGroup({ filters }: Props) {
               <>
                 {model?.info
                   ? canAdministerModel(activeUser, model.info.users) && (
-                      <AccessButton
-                        setPanelQs={setPanelQs}
-                        modelName={model.info.name}
-                      />
+                      <AccessButton modelName={model.info.name} />
                     )
                   : null}
                 <span className="model-access-alt">{lastUpdated}</span>

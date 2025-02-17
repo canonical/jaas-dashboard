@@ -87,6 +87,7 @@ describe("CloudGroup", () => {
   it("model access button is present in cloud group", () => {
     state.general = generalStateFactory.build({
       config: configFactory.build({
+        isJuju: true,
         controllerAPIEndpoint: "wss://jimm.jujucharms.com/api",
       }),
       controllerConnections: {

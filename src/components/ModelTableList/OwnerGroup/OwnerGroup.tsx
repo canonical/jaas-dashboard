@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 import ModelDetailsLink from "components/ModelDetailsLink";
 import Status from "components/Status";
 import TruncatedTooltip from "components/TruncatedTooltip";
-import { useQueryParams } from "hooks/useQueryParams";
 import {
   getActiveUsers,
   getControllerData,
@@ -39,10 +38,6 @@ export default function OwnerGroup({ filters }: Props) {
   const groupedAndFilteredData = useSelector(
     getGroupedByOwnerAndFilteredModelData(filters),
   );
-  const [, setPanelQs] = useQueryParams({
-    model: null,
-    panel: null,
-  });
   const activeUsers = useSelector(getActiveUsers);
   const controllers = useSelector(getControllerData);
 
@@ -117,10 +112,7 @@ export default function OwnerGroup({ filters }: Props) {
               <>
                 {model.info
                   ? canAdministerModel(activeUser, model.info.users) && (
-                      <AccessButton
-                        setPanelQs={setPanelQs}
-                        modelName={model.info.name}
-                      />
+                      <AccessButton modelName={model.info.name} />
                     )
                   : null}
                 <span className="model-access-alt">{lastUpdated}</span>

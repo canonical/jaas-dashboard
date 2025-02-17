@@ -7,7 +7,6 @@ import {
   SideNavigationText,
 } from "@canonical/react-components";
 import type { NavItem } from "@canonical/react-components/dist/components/SideNavigation/SideNavigation";
-import { urls as generateReBACURLS } from "@canonical/rebac-admin";
 import type { HTMLProps, ReactNode } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
@@ -32,13 +31,11 @@ import {
 } from "store/juju/selectors";
 import type { Controllers } from "store/juju/types";
 import { useAppSelector } from "store/store";
-import urls, { externalURLs } from "urls";
+import urls, { externalURLs, rebacURLS } from "urls";
 
 import "./_primary-nav.scss";
 
 import { Label } from "./types";
-
-const rebacURLS = generateReBACURLS(urls.permissions);
 
 const useControllersLink = () => {
   const controllers: Controllers | null = useSelector(getControllerData);
