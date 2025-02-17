@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import type { PropsWithChildren } from "react";
+import type { JSX, PropsWithChildren } from "react";
 
 type Props = {
   className?: string;

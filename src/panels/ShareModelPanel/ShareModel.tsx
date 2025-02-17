@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import Panel from "components/Panel";
 import ShareCard from "components/ShareCard";
 import ToastCard from "components/ToastCard";
+import type { ToastInstance } from "components/ToastCard";
 import useModelStatus from "hooks/useModelStatus";
 import { usePanelQueryParams } from "panels/hooks";
 import { actions as appActions } from "store/app";
@@ -139,7 +140,7 @@ export default function ShareModel() {
         }),
       );
     } catch (error) {
-      reactHotToast.custom((t) => (
+      reactHotToast.custom((t: ToastInstance) => (
         <ToastCard toastInstance={t} type="negative">
           {typeof error === "string"
             ? error
@@ -175,7 +176,7 @@ export default function ShareModel() {
       error = null;
     }
 
-    reactHotToast.custom((t) => (
+    reactHotToast.custom((t: ToastInstance) => (
       <ToastCard toastInstance={t} type={error ? "negative" : "positive"}>
         {error ?? (
           <>
@@ -200,7 +201,7 @@ export default function ShareModel() {
       "read",
     );
 
-    reactHotToast.custom((t) => (
+    reactHotToast.custom((t: ToastInstance) => (
       <ToastCard
         toastInstance={t}
         type="positive"
@@ -225,7 +226,7 @@ export default function ShareModel() {
     resetForm: () => void,
   ) => {
     if (userAlreadyHasAccess(values.username, users)) {
-      reactHotToast.custom((t) => (
+      reactHotToast.custom((t: ToastInstance) => (
         <ToastCard toastInstance={t} type="negative">
           <strong>{values.username}</strong> already has access to this model.
         </ToastCard>
@@ -245,14 +246,14 @@ export default function ShareModel() {
 
       const error = response?.results?.[0]?.error?.message;
       if (error) {
-        reactHotToast.custom((t) => (
+        reactHotToast.custom((t: ToastInstance) => (
           <ToastCard toastInstance={t} type="negative">
             {error}
           </ToastCard>
         ));
       } else if (response) {
         resetForm();
-        reactHotToast.custom((t) => (
+        reactHotToast.custom((t: ToastInstance) => (
           <ToastCard toastInstance={t} type="positive">
             <strong>{values.username}</strong> now has access to this model.
           </ToastCard>

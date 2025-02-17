@@ -1,5 +1,5 @@
 import type { PropsWithSpread } from "@canonical/react-components";
-import type { PropsWithChildren } from "react";
+import type { JSX, PropsWithChildren } from "react";
 
 import ModelDetailsLink from "components/ModelDetailsLink";
 import type {

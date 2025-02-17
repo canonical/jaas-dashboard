@@ -1,5 +1,5 @@
 import { Form, useFormikContext } from "formik";
-import type { ReactNode } from "react";
+import type { JSX, ReactNode } from "react";
 import { useEffect } from "react";
 
 import type { SetFieldValue } from "./types";

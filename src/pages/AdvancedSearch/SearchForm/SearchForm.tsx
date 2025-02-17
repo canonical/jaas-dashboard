@@ -1,6 +1,7 @@
 import { Button, Textarea } from "@canonical/react-components";
 import type { FormikProps } from "formik";
 import { Field, Form, Formik } from "formik";
+import type { JSX } from "react";
 import { useCallback, useEffect, useRef } from "react";
 
 import { copyToClipboard } from "components/utils";

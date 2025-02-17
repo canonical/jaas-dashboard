@@ -1,3 +1,5 @@
+import type { JSX } from "react";
+
 import AuditLogsTable from "components/AuditLogsTable";
 
 const AuditLogs = (): JSX.Element => (

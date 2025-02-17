@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { JSX, ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
 
 import "./_radio-input-box.scss";

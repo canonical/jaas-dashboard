@@ -1,5 +1,5 @@
 import { Spinner } from "@canonical/react-components";
-import type { ReactNode } from "react";
+import type { JSX, ReactNode } from "react";
 
 import "./_loading-handler.scss";
 import { TestId } from "./types";

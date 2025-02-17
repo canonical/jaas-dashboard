@@ -17,7 +17,6 @@ exports[`OptionInputs > renders the supplied list of options 1`] = `
         id="MyAction-fruit"
         name="MyAction-fruit"
         type="text"
-        value=""
       />
       <span>
         yum
@@ -37,7 +36,6 @@ exports[`OptionInputs > renders the supplied list of options 1`] = `
         id="MyAction-veg"
         name="MyAction-veg"
         type="text"
-        value=""
       />
       <span>
         ehhh

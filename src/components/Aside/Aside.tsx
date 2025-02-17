@@ -6,6 +6,7 @@ import type {
 } from "@canonical/react-components";
 import classnames from "classnames";
 import { useAnimate, usePresence } from "framer-motion";
+import type { JSX } from "react";
 import { useEffect, type PropsWithChildren } from "react";
 
 import "./_aside.scss";

@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Button } from "@canonical/react-components";
+import type { JSX } from "react";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 

@@ -1,5 +1,6 @@
 import { Button } from "@canonical/react-components";
 import { Form, Formik } from "formik";
+import type { JSX } from "react";
 import { useId } from "react";
 
 import { type AuditLogFilters } from "components/AuditLogsTable/AuditLogsTableFilters/AuditLogsTableFilters";

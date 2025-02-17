@@ -1,4 +1,5 @@
 import { Button } from "@canonical/react-components";
+import type { JSX } from "react";
 
 type Props = {
   handleQuery: (query: string) => Promise<void>;

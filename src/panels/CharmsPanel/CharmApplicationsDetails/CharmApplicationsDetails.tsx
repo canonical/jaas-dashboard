@@ -1,4 +1,5 @@
 import { Tooltip } from "@canonical/react-components";
+import type { JSX } from "react";
 
 import type { ApplicationInfo } from "juju/types";
 import { getSelectedApplications } from "store/juju/selectors";

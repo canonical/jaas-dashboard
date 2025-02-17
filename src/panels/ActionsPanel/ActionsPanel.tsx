@@ -1,4 +1,5 @@
 import { ActionButton, Button } from "@canonical/react-components";
+import type { JSX } from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";

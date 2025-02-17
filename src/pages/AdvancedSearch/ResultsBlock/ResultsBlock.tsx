@@ -1,4 +1,5 @@
 import { Spinner } from "@canonical/react-components";
+import type { JSX } from "react";
 import { useEffect } from "react";
 
 import { actions as jujuActions } from "store/juju";

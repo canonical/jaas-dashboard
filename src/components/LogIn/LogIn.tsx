@@ -8,6 +8,7 @@ import FadeUpIn from "animations/FadeUpIn";
 import AuthenticationButton from "components/AuthenticationButton";
 import Logo from "components/Logo";
 import ToastCard from "components/ToastCard";
+import type { ToastInstance } from "components/ToastCard";
 import {
   getConfig,
   getLoginError,
@@ -43,7 +44,7 @@ export default function LogIn() {
   useEffect(() => {
     visitURLs?.forEach((visitURL) => {
       if (!viewedAuthRequests.current.includes(visitURL)) {
-        reactHotToast.custom((t) => (
+        reactHotToast.custom((t: ToastInstance) => (
           <ToastCard toastInstance={t} type="caution">
             <p className="u-no-margin--top u-no-padding--top">
               Controller authentication required

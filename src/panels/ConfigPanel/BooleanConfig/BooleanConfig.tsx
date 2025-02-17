@@ -1,5 +1,5 @@
 import { RadioInput } from "@canonical/react-components";
-import type { FormEvent, MouseEvent } from "react";
+import type { FormEvent, JSX, MouseEvent } from "react";
 
 import type { ConfigProps } from "../ConfigField";
 import ConfigField from "../ConfigField";

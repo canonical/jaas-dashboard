@@ -1,3 +1,5 @@
+import type { JSX } from "react";
+
 import BaseLayout from "layout/BaseLayout/BaseLayout";
 
 import ErrorsBlock from "./ErrorsBlock";

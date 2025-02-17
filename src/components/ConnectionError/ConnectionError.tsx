@@ -3,6 +3,7 @@ import { useEffect, type PropsWithChildren } from "react";
 import reactHotToast from "react-hot-toast";
 
 import ToastCard from "components/ToastCard";
+import type { ToastInstance } from "components/ToastCard";
 import { getConnectionError } from "store/general/selectors";
 import { getAuditEventsErrors } from "store/juju/selectors";
 import { useAppSelector } from "store/store";
@@ -23,7 +24,7 @@ const ConnectionError = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     if (auditLogsErrors) {
-      reactHotToast.custom((t) => (
+      reactHotToast.custom((t: ToastInstance) => (
         <ToastCard type="negative" toastInstance={t}>
           {generateErrorContent(auditLogsErrors)}
         </ToastCard>

@@ -2,7 +2,7 @@ import type { ListSecretResult } from "@canonical/jujulib/dist/api/facades/secre
 import { ActionButton, Button } from "@canonical/react-components";
 import classnames from "classnames";
 import cloneDeep from "clone-deep";
-import type { MouseEvent } from "react";
+import type { JSX, MouseEvent } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
 

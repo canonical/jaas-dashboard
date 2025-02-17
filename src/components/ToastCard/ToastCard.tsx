@@ -4,7 +4,7 @@ import reactHotToast from "react-hot-toast";
 
 import "./_toast-card.scss";
 
-type ToastInstance = {
+export type ToastInstance = {
   createdAt: number;
   duration?: number | undefined;
   id: string;

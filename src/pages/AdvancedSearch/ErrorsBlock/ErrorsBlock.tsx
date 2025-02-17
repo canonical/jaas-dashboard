@@ -1,4 +1,5 @@
 import fastDeepEqual from "fast-deep-equal/es6";
+import type { JSX } from "react";
 
 import type { CrossModelQueryResponse } from "juju/jimm/JIMMV4";
 import {

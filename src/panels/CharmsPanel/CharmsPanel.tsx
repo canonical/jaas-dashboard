@@ -1,4 +1,5 @@
 import { Button, RadioInput, Tooltip } from "@canonical/react-components";
+import type { JSX } from "react";
 import { useState, type FormEventHandler, type ReactNode } from "react";
 
 import Panel from "components/Panel";

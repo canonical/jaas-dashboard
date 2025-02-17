@@ -1,5 +1,6 @@
 import { ReBACAdmin, urls as generateReBACURLS } from "@canonical/rebac-admin";
 import type { AxiosError } from "axios";
+import type { JSX } from "react";
 import { useRef } from "react";
 import { NavLink } from "react-router";
 
