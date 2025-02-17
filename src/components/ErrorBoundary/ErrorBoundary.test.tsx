@@ -8,7 +8,6 @@ function ChildComponent() {
   const error = new Error("Oh noes!");
   error.stack = "Stack trace output";
   throw error;
-  // eslint-disable-next-line no-unreachable
   return null;
 }
 

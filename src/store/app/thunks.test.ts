@@ -30,9 +30,7 @@ describe("thunks", () => {
     fetchMock.resetMocks();
     state = rootStateFactory.build({
       general: generalStateFactory.build({
-        config: configFactory.build({
-          isJuju: true,
-        }),
+        config: configFactory.build({ isJuju: true }),
         controllerConnections: {
           "wss://example.com": {
             user: {
@@ -43,9 +41,7 @@ describe("thunks", () => {
             },
           },
         },
-        credentials: {
-          "wss://example.com": credentialFactory.build(),
-        },
+        credentials: { "wss://example.com": credentialFactory.build() },
       }),
       juju: jujuStateFactory.build({
         controllers: {
@@ -71,9 +67,7 @@ describe("thunks", () => {
     const getState = vi.fn(() =>
       rootStateFactory.build({
         general: generalStateFactory.build({
-          config: configFactory.build({
-            authMethod: AuthMethod.CANDID,
-          }),
+          config: configFactory.build({ authMethod: AuthMethod.CANDID }),
         }),
       }),
     );
@@ -96,9 +90,7 @@ describe("thunks", () => {
     const getState = vi.fn(() =>
       rootStateFactory.build({
         general: generalStateFactory.build({
-          config: configFactory.build({
-            authMethod: AuthMethod.OIDC,
-          }),
+          config: configFactory.build({ authMethod: AuthMethod.OIDC }),
         }),
       }),
     );
@@ -137,7 +129,6 @@ describe("thunks", () => {
       .mockImplementationOnce(() => {})
       // Throw error when trying to dispatch connectAndPollControllers.
       .mockImplementationOnce(() => {
-        // eslint-disable-next-line no-throw-literal
         throw "Error while dispatching connectAndPollControllers!";
       });
     const getState = vi.fn(() => state);
@@ -192,7 +183,6 @@ describe("thunks", () => {
       .mockImplementationOnce(() => {})
       // Throw error when trying to dispatch connectAndPollControllers.
       .mockImplementationOnce(() => {
-        // eslint-disable-next-line no-throw-literal
         throw ["Unknown error."];
       });
     const getState = vi.fn(() => state);

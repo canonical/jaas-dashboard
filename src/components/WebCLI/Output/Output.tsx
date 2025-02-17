@@ -65,7 +65,13 @@ const WebCLIOutput = ({
         return;
       }
       const rect = target.getBoundingClientRect();
-      resizeDeltaY.current = e.targetTouches?.[0]?.pageY ?? 0 - rect?.top ?? 0;
+      if (typeof e.targetTouches?.[0]?.pageY === "number") {
+        resizeDeltaY.current = e.targetTouches[0].pageY;
+      } else if (typeof rect?.top === "number") {
+        resizeDeltaY.current = 0 - rect.top;
+      } else {
+        resizeDeltaY.current = 0;
+      }
       document.addEventListener("touchmove", resizeTouch, { passive: false });
     };
 
@@ -79,9 +85,7 @@ const WebCLIOutput = ({
     window.addEventListener("touchstart", addTouchResizeListener, {
       passive: false,
     });
-    window.addEventListener("touchend", removeListener, {
-      passive: false,
-    });
+    window.addEventListener("touchend", removeListener, { passive: false });
     return () => {
       window.removeEventListener("mousedown", addMouseResizeListener);
       window.removeEventListener("mouseup", removeListener);
