@@ -5,7 +5,7 @@ import createFetchMock from "vitest-fetch-mock";
 
 import { logger } from "utils/logger";
 
-vi.mock("react-ga");
+vi.mock("react-ga4");
 
 const fetchMocker = createFetchMock(vi);
 // sets globalThis.fetch and globalThis.fetchMock to our mocked version

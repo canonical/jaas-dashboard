@@ -8,6 +8,7 @@ import FadeUpIn from "animations/FadeUpIn";
 import AuthenticationButton from "components/AuthenticationButton";
 import Logo from "components/Logo";
 import ToastCard from "components/ToastCard";
+import useAnalytics from "hooks/useAnalytics";
 import {
   getConfig,
   getLoginError,
@@ -27,6 +28,7 @@ import { ErrorResponse, Label, TestId } from "./types";
 
 export default function LogIn() {
   const viewedAuthRequests = useRef<string[]>([]);
+  const sendAnalytics = useAnalytics();
   const config = useSelector(getConfig);
   const isJuju = useSelector(getIsJuju);
   const wsControllerURL = useAppSelector(getWSControllerURL);
@@ -70,6 +72,15 @@ export default function LogIn() {
       }
     });
   }, [visitURLs]);
+
+  useEffect(() => {
+    if (userIsLoggedIn) {
+      sendAnalytics({
+        category: "Authentication",
+        action: `User Login (${config?.authMethod})`,
+      });
+    }
+  }, [userIsLoggedIn, sendAnalytics, config]);
 
   let form: ReactNode = null;
   switch (config?.authMethod) {
