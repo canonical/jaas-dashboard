@@ -1,6 +1,7 @@
 import { renderHook, waitFor } from "@testing-library/react";
 import configureStore from "redux-mock-store";
 
+import type { RelationshipTuple } from "juju/jimm/JIMMV4";
 import { JIMMRelation, JIMMTarget } from "juju/jimm/JIMMV4";
 import { actions as jujuActions } from "store/juju";
 import type { RootState } from "store/store";
@@ -109,6 +110,39 @@ describe("useCheckPermissions", () => {
     });
   });
 
+  it("does not try and fetch a relation if the tuple object has a new reference", async () => {
+    const tuple = {
+      object: "user-eggman@external",
+      relation: JIMMRelation.MEMBER,
+      target_object: "group-admins",
+    };
+    const store = mockStore(state);
+    const { rerender } = renderHook(() => useCheckPermissions(tuple), {
+      wrapper: (props) => (
+        <ComponentProviders {...props} path="/" store={store} />
+      ),
+    });
+    await waitFor(() => {
+      expect(
+        store
+          .getActions()
+          .filter(
+            (dispatch) => dispatch.type === jujuActions.checkRelation.type,
+          ),
+      ).toHaveLength(1);
+    });
+    rerender({ ...tuple });
+    await waitFor(() => {
+      expect(
+        store
+          .getActions()
+          .filter(
+            (dispatch) => dispatch.type === jujuActions.checkRelation.type,
+          ),
+      ).toHaveLength(1);
+    });
+  });
+
   it("does not fetch a relation that is already loading", async () => {
     const tuple = {
       object: "user-eggman@external",
@@ -160,6 +194,61 @@ describe("useCheckPermissions", () => {
           .getActions()
           .find((dispatch) => dispatch.type === jujuActions.checkRelation.type),
       ).toBeUndefined();
+    });
+  });
+
+  it("cleans up a previous relation if the tuple changes", async () => {
+    const tuple = {
+      object: "user-eggman@external",
+      relation: JIMMRelation.MEMBER,
+      target_object: "group-admins",
+    };
+    state.juju.rebacRelations = [
+      rebacRelationFactory.build({
+        tuple: tuple,
+        loaded: true,
+      }),
+    ];
+    const store = mockStore(state);
+    const { rerender } = renderHook<
+      {
+        permitted: boolean;
+        loading: boolean;
+        loaded: boolean;
+      },
+      {
+        tupleObject: RelationshipTuple;
+        cleanup: boolean;
+      }
+    >(
+      ({ tupleObject, cleanup } = { tupleObject: tuple, cleanup: true }) =>
+        useCheckPermissions(tupleObject, cleanup),
+      {
+        wrapper: (props) => (
+          <ComponentProviders {...props} path="/" store={store} />
+        ),
+      },
+    );
+    await waitFor(() => {
+      expect(
+        store
+          .getActions()
+          .find((dispatch) => dispatch.type === jujuActions.checkRelation.type),
+      ).toBeUndefined();
+    });
+    rerender({ tupleObject: { ...tuple, object: "newobject" }, cleanup: true });
+    const action = jujuActions.removeCheckRelation({
+      tuple,
+    });
+    await waitFor(() => {
+      expect(
+        store
+          .getActions()
+          .find(
+            (dispatch) =>
+              dispatch.type === jujuActions.removeCheckRelation.type,
+          ),
+      ).toMatchObject(action);
     });
   });
 

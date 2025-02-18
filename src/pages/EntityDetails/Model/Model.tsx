@@ -87,11 +87,7 @@ const Model = () => {
   const canListSecrets = useAppSelector((state) =>
     getCanListSecrets(state, modelUUID),
   );
-  // Cleanup is set for this hook, but not for the instances of
-  // useCanConfigureModel in other model components as this component wraps all
-  // model routes so the model permissions are removed once the user navigates
-  // away from the model.
-  const canConfigureModel = useCanConfigureModel(true);
+  const canConfigureModel = useCanConfigureModel();
 
   const machinesTableRows = useMemo(() => {
     return modelName && userName
