@@ -77,10 +77,10 @@ export default function LogIn() {
     if (userIsLoggedIn) {
       sendAnalytics({
         category: "Authentication",
-        action: "User Login",
+        action: `User Login (${config?.authMethod})`,
       });
     }
-  }, [userIsLoggedIn, sendAnalytics]);
+  }, [userIsLoggedIn, sendAnalytics, config]);
 
   let form: ReactNode = null;
   switch (config?.authMethod) {

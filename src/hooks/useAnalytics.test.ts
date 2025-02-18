@@ -2,7 +2,8 @@ import ReactGA from "react-ga4";
 import type { MockInstance } from "vitest";
 import { vi } from "vitest";
 
-import * as store from "store/store";
+import { rootStateFactory } from "testing/factories";
+import { configFactory, generalStateFactory } from "testing/factories/general";
 import { renderWrappedHook } from "testing/utils";
 
 import useAnalytics from "./useAnalytics";
@@ -34,31 +35,46 @@ describe("useAnalytics", () => {
   });
 
   it("does not send events in development", () => {
-    vi.spyOn(store, "useAppSelector").mockImplementation(
-      vi.fn().mockReturnValue(true),
-    );
     vi.stubEnv("PROD", false);
-    const { result } = renderWrappedHook(() => useAnalytics());
+    const { result } = renderWrappedHook(() => useAnalytics(), {
+      state: rootStateFactory.build({
+        general: generalStateFactory.build({
+          config: configFactory.build({
+            analyticsEnabled: true,
+          }),
+        }),
+      }),
+    });
     result.current({ path: "/some/path" });
     expect(eventSpy).not.toHaveBeenCalled();
     expect(pageviewSpy).not.toHaveBeenCalled();
   });
 
   it("does not send events if analytics are disabled", () => {
-    vi.spyOn(store, "useAppSelector").mockImplementation(
-      vi.fn().mockReturnValue(false),
-    );
-    const { result } = renderWrappedHook(() => useAnalytics());
+    const { result } = renderWrappedHook(() => useAnalytics(), {
+      state: rootStateFactory.build({
+        general: generalStateFactory.build({
+          config: configFactory.build({
+            analyticsEnabled: false,
+          }),
+        }),
+      }),
+    });
     result.current({ path: "/some/path" });
     expect(eventSpy).not.toHaveBeenCalled();
     expect(pageviewSpy).not.toHaveBeenCalled();
   });
 
   it("can send pageview events", () => {
-    vi.spyOn(store, "useAppSelector").mockImplementation(
-      vi.fn().mockReturnValue(true),
-    );
-    const { result } = renderWrappedHook(() => useAnalytics());
+    const { result } = renderWrappedHook(() => useAnalytics(), {
+      state: rootStateFactory.build({
+        general: generalStateFactory.build({
+          config: configFactory.build({
+            analyticsEnabled: true,
+          }),
+        }),
+      }),
+    });
     result.current({ path: "/some/path" });
     expect(pageviewSpy).toHaveBeenCalledWith({
       hitType: "pageview",
@@ -67,10 +83,15 @@ describe("useAnalytics", () => {
   });
 
   it("can send events", () => {
-    vi.spyOn(store, "useAppSelector").mockImplementation(
-      vi.fn().mockReturnValue(true),
-    );
-    const { result } = renderWrappedHook(() => useAnalytics());
+    const { result } = renderWrappedHook(() => useAnalytics(), {
+      state: rootStateFactory.build({
+        general: generalStateFactory.build({
+          config: configFactory.build({
+            analyticsEnabled: true,
+          }),
+        }),
+      }),
+    });
     result.current({ category: "sidebar", action: "toggle" });
     expect(eventSpy).toHaveBeenCalledWith({
       category: "sidebar",
