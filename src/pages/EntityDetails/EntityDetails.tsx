@@ -11,6 +11,7 @@ import NotFound from "components/NotFound";
 import type { EntityDetailsRoute } from "components/Routes";
 import WebCLI from "components/WebCLI";
 import { useEntityDetailsParams } from "components/hooks";
+import useCanConfigureModel from "hooks/useCanConfigureModel";
 import { useQueryParams } from "hooks/useQueryParams";
 import useWindowTitle from "hooks/useWindowTitle";
 import BaseLayout from "layout/BaseLayout/BaseLayout";
@@ -54,6 +55,12 @@ const EntityDetails = ({ modelWatcherError }: Props) => {
   const modelInfo = useSelector(getModelInfo(modelUUID));
   const isK8s = useAppSelector((state) => isKubernetesModel(state, modelUUID));
   const { isNestedEntityPage } = useEntityDetailsParams();
+
+  // Cleanup is set for this hook, but not for the instances of
+  // useCanConfigureModel in other model components as this component wraps all
+  // model routes so the model permissions are removed once the user navigates
+  // away from the model.
+  useCanConfigureModel(true);
 
   const isJuju = useSelector(getIsJuju);
 

@@ -54,6 +54,7 @@ describe("Entity Details App", () => {
     state = rootStateFactory.build({
       general: generalStateFactory.build({
         config: configFactory.build({
+          isJuju: true,
           controllerAPIEndpoint: "wss://jimm.jujucharms.com/api",
         }),
         credentials: {

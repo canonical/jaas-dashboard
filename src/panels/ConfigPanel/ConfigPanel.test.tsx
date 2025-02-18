@@ -68,6 +68,7 @@ describe("ConfigPanel", () => {
     state = rootStateFactory.build({
       general: generalStateFactory.build({
         config: configFactory.build({
+          isJuju: true,
           controllerAPIEndpoint: "wss://example.com/api",
         }),
         controllerConnections: {
