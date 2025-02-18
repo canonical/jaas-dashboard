@@ -13,17 +13,20 @@ vi.mock("react-ga4", () => ({
     initialize: vi.fn(),
     send: vi.fn(),
     event: vi.fn(),
+    set: vi.fn(),
   },
 }));
 
 describe("useAnalytics", () => {
   let pageviewSpy: MockInstance;
   let eventSpy: MockInstance;
+  let setSpy: MockInstance;
 
   beforeEach(() => {
     vi.stubEnv("PROD", true);
     eventSpy = vi.spyOn(ReactGA, "event");
     pageviewSpy = vi.spyOn(ReactGA, "send");
+    setSpy = vi.spyOn(ReactGA, "set");
   });
 
   afterEach(() => {
@@ -96,9 +99,13 @@ describe("useAnalytics", () => {
     expect(eventSpy).toHaveBeenCalledWith({
       category: "sidebar",
       action: "toggle",
-      controllerVersion: "",
-      dashboardVersion: "",
-      isJuju: "false",
+    });
+    expect(setSpy).toHaveBeenCalledWith({
+      user_properties: {
+        controllerVersion: "",
+        dashboardVersion: "",
+        isJuju: "false",
+      },
     });
   });
 });

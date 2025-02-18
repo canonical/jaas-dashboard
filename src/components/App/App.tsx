@@ -12,15 +12,7 @@ function App() {
   const isProduction = import.meta.env.PROD;
   const analyticsEnabled = useAppSelector(getAnalyticsEnabled);
   if (isProduction && analyticsEnabled) {
-    ReactGA.initialize("G-JHXHM8VXJ1", {
-      gtagOptions: {
-        custom_map: {
-          dimension1: "dashboardVersion",
-          dimension2: "controllerVersion",
-          dimension3: "isJuju",
-        },
-      },
-    });
+    ReactGA.initialize("G-JHXHM8VXJ1");
     ReactGA.send({
       hitType: "pageview",
       page: window.location.href.replace(window.location.origin, ""),
